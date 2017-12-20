@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="calculator.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="app">
+        <div class="screen" id="sc"></div>
+        <div class="row">
+          <button class="double button operator" onclick="clearAll()">Clear</button>
+              <button class="button operator" onclick="addPi()">π</button>
+              <button class="button operator" onclick="addOperator('/')">&divide;</button>
+        </div>
+        
+        <div class="row">
+          <button class="button num" onclick="add('7')">7</button>
+          <button class="button num" onclick="add('8')">8</button>
+          <button class="button num" onclick="add('9')">9</button>
+          <button class="button operator" onclick="addOperator('*')">*</button>
+        </div>
+        <div class="row">
+          <button class="button num" onclick="add('4')">4</button>
+          <button class="button num" onclick="add('5')">5</button>
+          <button class="button num" onclick="add('6')">6</button>
+          <button class="button operator" onclick="addOperator('-')">-</button>
+        </div>
+        
+        <div class="row">
+          <button class="button num" onclick="add('1')">1</button>
+          <button class="button num" onclick="add('2')">2</button>
+          <button class="button num" onclick="add('3')">3</button>
+          <button class="button operator" onclick="addOperator('+')">+</button>
+        </div>
+        
+        <div class="row">
+          <button class="button num double" onclick="add('0')">0</button>
+          <button class="button num" onclick="add('.')">.</button>
+          <button class="button operator" onclick="evalu()">=</button>
+        </div>
+      </div>
+
+<script>
+let sc = document.getElementById("sc");
+
+function add(a){
+  sc.innerHTML += a;
+}
+function clearAll(){
+  sc.innerHTML = "";
+}
+function clearLast(){
+  sc.innerHTML = sc.innerHTML.slice(0, -1);
+}
+function evalu(){
+  let a = sc.innerHTML;
+  sc.innerHTML = eval(a);
+}
+function point(){
+  if(sc.innerHTML === "") {
+    sc.innerHTML = sc.innerHTML.concat("0.");
+  }else {
+    sc.innerHTML = sc.innerHTML.concat(".");
+  }
+}
+function addPi(){
+  let d = sc.innerHTML;
+  if(isNaN(parseInt(d[d.length - 1]))){
+    sc.innerHTML = sc.innerHTML.concat("3.14");
+  }else{
+    alert("Before adding 'pi' use operator");
+  }
+}
+function addOperator(op){
+  let d = sc.innerHTML;
+  if(op === "-" && isNaN(parseInt(d[d.length - 1])) && (d[d.length - 1]) != "-"){
+     sc.innerHTML += op;
+  }else if(isNaN(parseInt(d[d.length - 1])) && isNaN(parseInt(d[d.length - 2]))){
+    sc.innerHTML = sc.innerHTML.slice(0, -2);
+    sc.innerHTML += op;
+  }else if(isNaN(parseInt(d[d.length - 1]))){
+    sc.innerHTML = sc.innerHTML.slice(0, -1);
+    sc.innerHTML += op;
+  }else{
+    sc.innerHTML += op;
+  }
+}
+window.addEventListener('keydown',function (e) {
+  if (e.which >= 96 && e.which <= 105){
+    sc.innerHTML += (e.which - 96);
+  }else if(e.which >= 48 && e.which <= 57){
+    sc.innerHTML += (e.which - 48);
+  }else if(e.which === 8 || e.which === 46){
+    clearLast();       
+  }else if(e.which === 16 || e.which === 107){
+    addOperator("+");
+  }else if(e.which === 109 || e.which === 189){
+    addOperator("-");
+  }else if(e.which === 111 || e.which === 191){
+    addOperator("/");
+  }else if(e.which === 106){
+    addOperator("*");
+  }else if(e.which === 110 || e.which === 190){
+    point();
+  }else if(e.which === 13){
+    evalu();
+  }
+});
+</script>
+</body>
+</html>
